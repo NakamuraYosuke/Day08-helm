@@ -332,3 +332,4 @@ loki-stack-grafana-nodeport   NodePort   10.111.192.237   <none>        80:30999
 ブラウザを起動し、以下のアドレスを入力します。
 `http://192.168.64.4:30999`
 
+![](https://raw.githubusercontent.com/NakamuraYosuke/Day08-helm/main/images/login.png)
