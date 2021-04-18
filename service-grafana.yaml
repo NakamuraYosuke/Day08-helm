@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/instance: loki-stack-1618754123
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/version: 6.7.0
+    helm.sh/chart: grafana-5.7.10
+  name: loki-stack-grafana-nodeport
+  namespace: loki
+spec:
+  ports:
+  - name: service
+    port: 80
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app.kubernetes.io/instance: loki-stack-1618754123
+    app.kubernetes.io/name: grafana
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}
