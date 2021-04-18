@@ -333,3 +333,67 @@ loki-stack-grafana-nodeport   NodePort   10.111.192.237   <none>        80:30999
 `http://192.168.64.4:30999`
 
 ![](https://raw.githubusercontent.com/NakamuraYosuke/Day08-helm/main/images/login.png)
+
+![](https://raw.githubusercontent.com/NakamuraYosuke/Day08-helm/main/images/toppage.png)
+
+ログインしたら、左側にある「Exproler」を選択し、既にLokiがDataSourceとして登録されているので、「Loki」を選択した状態で「Log labels」を選ぶことでk8sクラスタ上のログの確認をすることができます。
+
+
+![](https://raw.githubusercontent.com/NakamuraYosuke/Day08-helm/main/images/explore.png)
+
+前回の演習で作成した`scaling`アプリケーションをデプロイし、ログを監視します。
+`scaling.yaml`を作成し、以下の内容とします。
+```
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
+      app: scaling
+    name: scaling
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: scaling
+    strategy: {}
+    template:
+      metadata:
+        labels:
+          app: scaling
+      spec:
+        containers:
+        - image: nakanakau/scaling:latest
+          name: scaling
+
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: scaling
+    name: scaling
+  spec:
+    type: NodePort
+    ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: scaling
+kind: List
+metadata: {}
+```
+
+```
+$ kubectl apply -f scaling.yaml
+```
+
+アクセスしてみます。
+```
+$ curl -s http://$(minikube ip):30346
+Server IP: 172.17.0.7
+```
+
+ログが出力されていることを確認します。
+![](https://raw.githubusercontent.com/NakamuraYosuke/Day08-helm/main/images/scaling-log.png)
