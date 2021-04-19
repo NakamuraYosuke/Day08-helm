@@ -45,7 +45,7 @@ Lokiのロギングスタックは以下の3つのコンポーネントで構成
 ### Helmインストール
 brewを使ってHelmをインストールします。
 ```
-$ brew install helm
+$ brew install kubernetes-helm
 ```
 以下のバージョンがインストールされたことを確認します。
 ```
